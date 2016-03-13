@@ -4,6 +4,9 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/rjrobinson/go-programming-blueprints/trace"
 )
 
 func main() {
@@ -11,7 +14,7 @@ func main() {
 	flag.Parse()
 
 	r := newRoom()
-
+	r.tracer = trace.NewTracer(os.Stdout)
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 
