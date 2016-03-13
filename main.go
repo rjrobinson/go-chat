@@ -1,11 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"flag"
+	"log"
 	"net/http"
 )
 
 func main() {
+	var addr = flag.String("addr", ":8080", "The addr of this application.")
+	flag.Parse()
+
 	r := newRoom()
 
 	http.Handle("/", &templateHandler{filename: "chat.html"})
@@ -14,7 +18,6 @@ func main() {
 	// get the room going
 	go r.run()
 	// start the webserver
-	port := ":8080"
-	fmt.Println("Starting on localhost", port)
-	http.ListenAndServe(port, nil)
+	log.Println("Starting on addr", *addr)
+	http.ListenAndServe(*addr, nil)
 }
